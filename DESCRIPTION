@@ -1,0 +1,14 @@
+Package: mch
+Type: Package
+Title: Multicore Cluster Hybrid
+Version: 0.1.0
+Author: Chrstoph Baldow
+Maintainer: Christoph Baldow <christoph.baldow@gmail.com>
+Description: This packages supports multicore operations on cluster for heavy computations
+License: ???
+Encoding: UTF-8
+LazyData: true
+Imports:
+  doMC,
+  parallel
+RoxygenNote: 6.0.1
