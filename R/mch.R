@@ -11,8 +11,7 @@ mch <- function(cl, cores, func, params){
     stop("params has to be a list")
 
 
-  clusterExport(cl = cl, "func")
-  clusterExport(cl = cl, "params")
+  clusterExport(cl = cl, varlist = c("func", "params"), envir = environment())
 
   norm_cores <- cores/sum(cores)
   params_count <- length(params)
@@ -21,9 +20,11 @@ mch <- function(cl, cores, func, params){
 
   ib <- 1
   cluster_params <- list()
-  for(i in 1:(length(job_counts)-1)){
-    cluster_params <- c(cluster_params, list(c(cores[i], ib, job_counts[i])))
-    ib <- job_counts[i]+1
+  if(length(job_counts) > 1){
+    for(i in 1:(length(job_counts)-1)){
+      cluster_params <- c(cluster_params, list(c(cores[i], ib, job_counts[i])))
+      ib <- job_counts[i]+1
+    }
   }
   cluster_params <- c(cluster_params, list(c(cores[length(cores)], ib, params_count)))
 
