@@ -1,6 +1,7 @@
 #' multicore cluster hybrid
 #'
-#' ???
+#' Note: You need to install multicore in order to use mch:
+#' install.packages('multicore',,'http://www.rforge.net/')
 #' @export
 mch <- function(cl, cores, func, params){
 
@@ -29,15 +30,8 @@ mch <- function(cl, cores, func, params){
   cluster_params <- c(cluster_params, list(c(cores[length(cores)], ib, params_count)))
 
 
-  return(unlist(parLapplyLB(cl = cl, X = cluster_params, fun = function(e){
-    require("doMC")
-    registerDoMC(e[1])
-
-    out <- foreach(i = e[2]:e[3]) %dopar% {
-      func(params[[i]])
-    }
-
-    return(out)
+  return(unlist(parallel::parLapplyLB(cl = cl, X = cluster_params, fun = function(e){
+    multicore::mclapply(e[2]:e[3], function(i) func(params[[i]]), mc.cores = e[1])
   }), recursive = F))
 
 }
