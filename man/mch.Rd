@@ -7,5 +7,6 @@
 mch(cl, cores, func, params)
 }
 \description{
-???
+#' Note: You need to install multicore in order to use mch:
+#' install.packages('multicore',,'http://www.rforge.net/')
 }
