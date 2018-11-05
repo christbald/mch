@@ -3,7 +3,7 @@
 #' Note: You need to install multicore in order to use mch:
 #' install.packages('multicore',,'http://www.rforge.net/')
 #' @export
-mch <- function(cl, cores, func, params, ...){
+mch <- function(cl, cores, func, params, consts = NULL){
 
   if(length(cl) != length(cores))
     stop("cores vector has to be euqal to cluster size")
@@ -11,8 +11,7 @@ mch <- function(cl, cores, func, params, ...){
   if(typeof(params) != "list")
     stop("params has to be a list")
 
-
-  clusterExport(cl = cl, varlist = c("func", "params"), envir = environment())
+  clusterExport(cl = cl, varlist = c("func", "params", "consts"), envir = environment())
 
   norm_cores <- cores/sum(cores)
   params_count <- length(params)
@@ -29,9 +28,16 @@ mch <- function(cl, cores, func, params, ...){
   }
   cluster_params <- c(cluster_params, list(c(cores[length(cores)], ib, params_count)))
 
+  if (is.null(consts)) {
+
+    return(unlist(parallel::parLapplyLB(cl = cl, X = cluster_params, fun = function(e){
+      multicore::mclapply(e[2]:e[3], function(i) func(params[[i]]), mc.cores = e[1])
+    }), recursive = F))
+
+  }
 
   return(unlist(parallel::parLapplyLB(cl = cl, X = cluster_params, fun = function(e){
-    multicore::mclapply(e[2]:e[3], function(i) func(params[[i]], ...), mc.cores = e[1])
+    multicore::mclapply(e[2]:e[3], function(i) func(params[[i]], consts), mc.cores = e[1])
   }), recursive = F))
 
 }
