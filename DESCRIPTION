@@ -1,7 +1,7 @@
 Package: mch
 Type: Package
 Title: Multicore Cluster Hybrid
-Version: 0.4.1
+Version: 0.4.2
 Author: Chrstoph Baldow
 Maintainer: Christoph Baldow <christoph.baldow@gmail.com>
 Description: This packages supports multicore operations on cluster for heavy computations

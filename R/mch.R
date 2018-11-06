@@ -11,7 +11,7 @@ mch <- function(cl, cores, func, params, consts = NULL){
   if(typeof(params) != "list")
     stop("params has to be a list")
 
-  clusterExport(cl = cl, varlist = c("func", "params", "consts"), envir = environment())
+  parallel::clusterExport(cl = cl, varlist = c("func", "params", "consts"), envir = environment())
 
   norm_cores <- cores/sum(cores)
   params_count <- length(params)
