@@ -28,10 +28,8 @@ mch <- function(cl, cores, func, mchParams){
   }
   cluster_params <- c(cluster_params, list(c(cores[length(cores)], ib, params_count)))
 
-  print(cluster_params)
-
-    return(unlist(parallel::parLapplyLB(cl = cl, X = cluster_params, fun = function(e){
-      multicore::mclapply(e[2]:e[3], function(i) func(mchParams[[i]]), mc.cores = e[1])
-    }), recursive = F))
+  return(unlist(parallel::parLapplyLB(cl = cl, X = cluster_params, fun = function(e){
+    multicore::mclapply(e[2]:e[3], function(i) func(mchParams[[i]]), mc.cores = e[1])
+  }), recursive = F))
 
 }
